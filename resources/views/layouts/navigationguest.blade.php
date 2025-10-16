@@ -8,7 +8,7 @@
         </div>
     </div>
 </nav>
-<nav class="bg-gray-50 dark:bg-gray-900">
+<!-- <nav class="bg-gray-50 dark:bg-gray-900">
     <div class="max-w-screen-xl px-4 mx-auto">
         <div class="flex items-center">
             <ul class="flex flex-wrap font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm ">
@@ -27,4 +27,4 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav> -->

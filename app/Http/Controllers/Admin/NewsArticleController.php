@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class NewsArticleController extends Controller
 {
@@ -22,13 +23,13 @@ class NewsArticleController extends Controller
         $user = Auth::user();
         $search = $request->search;
 
-        $data = Article::where('user_id', $user->id)->where(function ($query) use ($search) {
+        $data = Article::where(function ($query) use ($search) {
             if ($search) {
                 $query->where('title', 'like', "%{$search}%")->orWhere('content', 'like', "%{$search}%");
             }
         })->orderBy('id', 'desc')->paginate(10)->withQueryString();
 
-        return view('member.blogs.index', compact('data'));
+        return view('article.index', compact('data'));
     }
 
     /**
@@ -46,23 +47,27 @@ class NewsArticleController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => '',
-            'content' => 'required|string',
+            'content' => 'string',
         ]);
 
         $data = $validated;
-        // $data['slug'] = Str::slug($validated['title']); // Handled by model boot method now
+        $data['slug'] = Str::slug($validated['title']); // Handled by model boot method now
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/news_images');
-            $data['image_path'] = Storage::url($path); // Store URL accessible path
-        }
+        // if ($request->hasFile('image')) {
+        //     $path = $request->file('image')->store('public/news_images');
+        //     $data['image_path'] = Storage::url($path); // Store URL accessible path
+        // }
 
-        $data['is_published'] = $request->has('is_published'); // Convert checkbox value
+        // If slug is empty, let model generate it, otherwise use provided
+        // if (empty($data['slug'])) {
+        //     unset($data['slug']);
+        // }
+
+        // $data['is_published'] = $request->has('is_published'); // Convert checkbox value
 
         Article::create($data);
 
-        return redirect()->route('admin.news.index')->with('success', 'News article created successfully.');
+        return redirect()->route('news.index')->with('success', 'News article created successfully.');
     }
 
     /**
@@ -70,7 +75,7 @@ class NewsArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('article.article', compact('news'));
+        // return view('article.article', compact('article'));
     }
 
     /**
@@ -78,7 +83,7 @@ class NewsArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        return view('admin.news.edit', compact('news'));
+        return view('article.edit', compact('article'));
     }
 
     /**
@@ -89,9 +94,9 @@ class NewsArticleController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'published_at' => 'nullable|date',
-            'is_published' => 'boolean',
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'published_at' => 'nullable|date',
+            // 'is_published' => 'boolean',
             'slug' => 'nullable|string|unique:articles,slug,' . $article->id, // Allow current slug
         ]);
 
@@ -117,7 +122,7 @@ class NewsArticleController extends Controller
 
         $article->update($data);
 
-        return redirect()->route('admin.news.index')->with('success', 'News article updated successfully.');
+        return redirect()->route('news.index')->with('success', 'News article updated successfully.');
     }
 
     /**

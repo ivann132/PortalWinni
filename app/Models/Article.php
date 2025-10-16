@@ -17,37 +17,37 @@ class Article extends Model
     protected $fillable = [
         'title',
         'slug',
-        'excerpt',
+        // 'excerpt',
         'content',
         // 'image',
-        'category_id',
-        'user_id',
-        'is_published',
-        'published_at'
+        // 'category_id',
+        // 'user_id',
+        // 'is_published',
+        // 'published_at'
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
-        'is_published' => 'boolean',
+        // 'is_published' => 'boolean',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
     
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
     
     public function getRouteKeyName()
     {
         return 'slug';
     }
     
-    public function scopePublished($query)
-    {
-        return $query->where('is_published', true);
-    }
+    // public function scopePublished($query)
+    // {
+    //     return $query->where('is_published', true);
+    // }
 }

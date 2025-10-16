@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            // $table->text('description')->nullable();
             $table->text('content')->nullable();
-            $table->enum('status', ['draft', 'publish'])->default('draft');
-            $table->string('thumbnail')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->enum('status', ['draft', 'publish'])->default('draft');
+            // $table->string('thumbnail')->nullable();
+            // $table->unsignedBigInteger('user_id');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

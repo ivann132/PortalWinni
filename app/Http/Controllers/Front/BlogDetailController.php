@@ -12,7 +12,7 @@ class BlogDetailController extends Controller
     {
         // echo ("$slug");
 
-        $data = Article::where('status', 'publish')->where('slug', $slug)->first();
+        $data = Article::where('slug', $slug)->first();
         // $data = Post::where('status', 'publish')->where('slug', $slug)->firstOrFail();
 
         $pagination = $this->pagination($data->id);
@@ -22,8 +22,8 @@ class BlogDetailController extends Controller
 
     private function pagination($id)
     {
-        $dataPrev = Article::where('status', 'publish')->where('id', '<', $id)->orderBy('id', 'desc')->first();
-        $dataNext = Article::where('status', 'publish')->where('id', '>', $id)->orderBy('id', 'desc')->first();
+        $dataPrev = Article::where('id', '<', $id)->orderBy('id', 'desc')->first();
+        $dataNext = Article::where('id', '>', $id)->orderBy('id', 'desc')->first();
 
         $data = [
             'prev' => $dataPrev,
